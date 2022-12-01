@@ -1,0 +1,11 @@
+.card {
+    width: 360px;
+    min-height: 160px;
+    padding: 20px;
+    margin: 0 10px;
+
+    background: linear-gradient(to right bottom, #007FFF, #0059B2);
+    box-shadow: rgb(0 0 0 / 10%) 0px 20px 25px, rgb(0 0 0 / 4%) 0px 10px 10px;
+    border-radius: 10px;
+    color: rgb(255, 255, 255);
+}
