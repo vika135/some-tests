@@ -15,7 +15,8 @@ export default function CardList() {
 
     return (
         <div className="CardList">
-            {cards ? cards.map((card: CardModel) => <Card key={card.title} card={card}/>) : null}
+            {cards ? cards.map((card: CardModel) => <Card key={card.title} card={card} type="regular"/>) : null}
+            <Card type="add"></Card>
         </div>
     );
 }
