@@ -1,5 +1,5 @@
 .App {
-    height: 100vh;
+    min-height: 100vh;
     padding: 30px;
     background-color: #0A1929;
 }

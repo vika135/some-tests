@@ -1,3 +1,19 @@
 .CardList {
     display: flex;
+    flex-wrap: wrap;
+}
+
+.spinner-fade-out {
+    animation-name: fadeOut;
+    animation-duration: 500ms;
+}
+
+@keyframes fadeOut {
+    0%{
+        opacity: 1;
+    }
+    100%{
+        display: none;
+        opacity: 0;
+    }
 }
