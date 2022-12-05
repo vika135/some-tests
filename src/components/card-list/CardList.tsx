@@ -3,21 +3,19 @@ import Card from "../card/Card";
 import {CardModel} from "../../models/card.model";
 import {HttpServer} from "../../services/http";
 import {useEffect, useState} from "react";
-import {FADE_OUT_ANIMATION_TIME, LOADING_DELAY} from "../../const/shared.constants";
+import {FADE_OUT_ANIMATION_TIME} from "../../const/shared.constants";
 import {CircularProgress} from "@mui/material";
 
 export default function CardList() {
     const [cards, setCards] = useState<CardModel[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const getCards = () => HttpServer<CardModel[]>().get("cards");
+    const getCards = HttpServer<CardModel[]>().get;
 
     useEffect(() => {
         setIsLoading(true);
-        getCards().then(data => {
+        getCards("cards").then(data => {
             setCards(data);
-            setTimeout(() => {
-                setIsLoading(false)
-            }, LOADING_DELAY);
+            setIsLoading(false)
         });
     }, []);
 
@@ -46,7 +44,7 @@ export default function CardList() {
 
     const spinner = () => {
         return (
-            <div className={`${cards && isLoading ? "spinner-fade-out" : ""}`}><CircularProgress color="inherit"/></div>
+            <CircularProgress color="inherit"/>
         )
     }
 
