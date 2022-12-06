@@ -21,16 +21,6 @@ export default function Card(props: Record<string, any>) {
         }
     ];
 
-    const regularCard = () => {
-        return (
-            <div className={`card card-regular ${isDeleted ? "deleted" : ""}`}>
-                <span onClick={onDeleteClick}>x</span>
-                <h2>{props.card.title}</h2>
-                <div>{props.card.description}</div>
-            </div>
-        )
-    }
-
     const onDeleteClick = (_: Object) => {
         setIsLoading(true);
         HttpServer().remove("cards", props.card.id).then(_ => {
@@ -60,9 +50,19 @@ export default function Card(props: Record<string, any>) {
         }
     }
 
+    const regularCard = () => {
+        return (
+            <li className={`card card-regular ${isDeleted ? "deleted" : ""}`}>
+                <span onClick={onDeleteClick}>x</span>
+                <h2>{props.card.title}</h2>
+                <div>{props.card.description}</div>
+            </li>
+        )
+    }
+
     const addCard = () => {
         return (
-            <div className="card card-add">
+            <form className="card card-add">
                 {loading ? <CircularProgress color="inherit" /> : inputs.map(input =>
                     <TextField
                         key={input.name}
@@ -74,7 +74,7 @@ export default function Card(props: Record<string, any>) {
                     />
                 )}
                 <Button variant="outlined" onClick={onSubmit}>Create Card</Button>
-            </div>
+            </form>
         )
     }
 

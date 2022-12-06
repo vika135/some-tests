@@ -9,7 +9,7 @@ import {CircularProgress} from "@mui/material";
 export default function CardList() {
     const [cards, setCards] = useState<CardModel[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const getCards = HttpServer<CardModel[]>().get;
+    const getCards = HttpServer<CardModel[]>().getAll;
 
     useEffect(() => {
         setIsLoading(true);
@@ -49,8 +49,8 @@ export default function CardList() {
     }
 
     return (
-        <div className="CardList">
+        <ul className="CardList">
             {cards && !isLoading ? cardsView() : spinner()}
-        </div>
+        </ul>
     );
 }

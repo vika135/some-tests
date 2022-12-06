@@ -1,16 +1,26 @@
-export function HttpServer<T>():
-    {
-        get: (endpoint: string) => Promise<T>,
-        post: (endpoint: string, data: T) => Promise<T>,
-        remove: (endpoint: string, id: number) => Promise<Record<string,never>>,
-    } {
-    const get = async (endpoint: string): Promise<T> => {
-        const response = await fetch("http://localhost:3001/" + endpoint)
+import {endpoints} from "../api/endpoints";
+
+interface RestServer<T> {
+    getAll: (endpoint: string) => Promise<T>,
+    get: (endpoint: string, id: number) => Promise<T>,
+    post: (endpoint: string, data: T) => Promise<T>,
+    remove: (endpoint: string, id: number) => Promise<Record<string,never>>,
+}
+
+export function HttpServer<T>(): RestServer<T> {
+
+    const getAll = async (endpoint: string): Promise<T> => {
+        const response = await fetch(endpoints.list(endpoint))
+        return await response.json() as T
+    }
+
+    const get = async (endpoint: string, id: number): Promise<T> => {
+        const response = await fetch(endpoints.item(endpoint, id))
         return await response.json() as T
     }
 
     const post = async (endpoint: string, data: T): Promise<T> => {
-        const response = await fetch("http://localhost:3001/" + endpoint, {
+        const response = await fetch(endpoints.list(endpoint), {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json"
@@ -21,11 +31,11 @@ export function HttpServer<T>():
     }
 
     const remove = async (endpoint: string, id: number): Promise<Record<string,never>> => {
-        const response = await fetch("http://localhost:3001/" + endpoint + "/" + id, {
+        const response = await fetch(endpoints.item(endpoint, id), {
             method: 'DELETE',
         })
         return await response.json()
     }
 
-    return { get, post, remove }
+    return { getAll, post, remove, get }
 }
