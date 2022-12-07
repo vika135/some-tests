@@ -10,3 +10,4 @@ Used in this project:
 - testing-library
 - jest
 - json-server
+- performance optimization techniques
