@@ -18,8 +18,6 @@
     animation-fill-mode: forwards;
 }
 
-.card-regular {}
-
 .card-add {
     display: flex;
     flex-direction: column;

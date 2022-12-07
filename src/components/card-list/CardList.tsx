@@ -2,13 +2,15 @@ import "./CardList.css";
 import Card from "../card/Card";
 import {CardModel} from "../../models/card.model";
 import {HttpServer} from "../../services/http";
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {FADE_OUT_ANIMATION_TIME} from "../../const/shared.constants";
 import {CircularProgress} from "@mui/material";
+import NewCardForm from "../new-card-form/NewCardForm";
 
 export default function CardList() {
     const [cards, setCards] = useState<CardModel[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+
     const getCards = HttpServer<CardModel[]>().getAll;
 
     useEffect(() => {
@@ -19,25 +21,21 @@ export default function CardList() {
         });
     }, []);
 
-    const onNewCardCreated = (card: CardModel) => {
-        setCards([...cards, card]);
-    }
+    const onNewCardCreated = (card: CardModel) => setCards([...cards, card]);
 
-    const onDeleteCard = (id: number) => {
-        setTimeout(() => setCards([...(cards.filter(card => card.id !== id))]), FADE_OUT_ANIMATION_TIME);
-    }
+    const onDeleteCard = useCallback((id: number) =>
+        setTimeout(() => setCards([...(cards.filter(card => card.id !== id))]), FADE_OUT_ANIMATION_TIME), []);
 
     const cardsView = () => {
         return (
             <>
                 {cards.map((card: CardModel) =>
                     <Card
-                        key={card.title}
+                        key={card.id}
                         card={card}
-                        type="regular"
                         cardDeleted={onDeleteCard}
                     />)}
-                <Card newCardAdded={onNewCardCreated} type="add"/>
+                <NewCardForm newCardAdded={onNewCardCreated}/>
             </>
         )
     }
@@ -47,6 +45,8 @@ export default function CardList() {
             <CircularProgress color="inherit"/>
         )
     }
+
+    console.log(`cardlist is rerendering`)
 
     return (
         <ul className="CardList">
