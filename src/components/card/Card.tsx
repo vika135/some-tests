@@ -5,16 +5,13 @@ import {HttpServer} from "../../services/http";
 
 export default memo(function Card({card, cardDeleted}: Record<string, any>) {
     const [isDeleted, setIsDeleted] = useState<boolean>(false);
-    const [loading, setIsLoading] = useState<boolean>(false);
 
-    const memoizedCard = useMemo(() => card, [card?.id]);
+    card = useMemo(() => card, [card?.id]);
 
     const onDeleteClick = (_: Object) => {
-        setIsLoading(true);
         HttpServer().remove("cards", card.id).then(_ => {
             cardDeleted(card.id);
             setIsDeleted(true);
-            setIsLoading(false);
         })
     }
 
@@ -23,8 +20,8 @@ export default memo(function Card({card, cardDeleted}: Record<string, any>) {
     return (
         <li className={`card card-regular ${isDeleted ? "deleted" : ""}`}>
             <span onClick={onDeleteClick}>x</span>
-            <h2>{memoizedCard.title}</h2>
-            <div>{memoizedCard.description}</div>
+            <h2>{card.title}</h2>
+            <div>{card.description}</div>
         </li>
     )
 })

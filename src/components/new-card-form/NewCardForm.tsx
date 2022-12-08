@@ -5,7 +5,7 @@ import {memo, useState} from "react";
 
 type CardForm = Record<string, string>;
 
-export default function NewCardForm({newCardAdded}: Record<string, any>) {
+export default memo(function NewCardForm({newCardAdded}: Record<string, any>) {
     const [form, setForm] = useState<CardForm>({});
     const [loading, setIsLoading] = useState<boolean>(false);
 
@@ -55,4 +55,4 @@ export default function NewCardForm({newCardAdded}: Record<string, any>) {
             <Button variant="outlined" onClick={onSubmit}>Create Card</Button>
         </form>
     )
-}
+})

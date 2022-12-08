@@ -21,10 +21,10 @@ export default function CardList() {
         });
     }, []);
 
-    const onNewCardCreated = (card: CardModel) => setCards([...cards, card]);
+    const onNewCardCreated = useCallback((card: CardModel) => setCards(prev => [...prev, card]), []);
 
     const onDeleteCard = useCallback((id: number) =>
-        setTimeout(() => setCards([...(cards.filter(card => card.id !== id))]), FADE_OUT_ANIMATION_TIME), []);
+        setTimeout(() => setCards(prev => prev.filter(item => item.id !== id)), FADE_OUT_ANIMATION_TIME), []);
 
     const cardsView = () => {
         return (
