@@ -11,3 +11,5 @@ Used in this project:
 - jest
 - json-server
 - performance optimization techniques
+- windowing (list virtualization) - react-window
+- react-router

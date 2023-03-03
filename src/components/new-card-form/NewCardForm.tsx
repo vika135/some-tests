@@ -1,47 +1,40 @@
 import "../card/Card.css";
 import {Button, CircularProgress, TextField} from "@mui/material";
-import {HttpServer} from "../../services/http";
-import {memo, useState} from "react";
+import {FormEvent, memo, useContext, useState} from "react";
+import usePostDataToBackend from "./hooks/usePostDataToBackend.hook";
+import {inputs} from "../../const/card-form-config.const";
+import {CardsDispatch} from "../../store/CardsContextProvider";
+import {ActionTypes} from "../../store/actions";
+import {CardModel} from "../../models/card.model";
 
-type CardForm = Record<string, string>;
+export default memo(function NewCardForm() {
+    const [form, setForm] = useState<CardModel>({} as CardModel);
+    const [loading, postData] = usePostDataToBackend<CardModel>();
 
-export default memo(function NewCardForm({newCardAdded}: Record<string, any>) {
-    const [form, setForm] = useState<CardForm>({});
-    const [loading, setIsLoading] = useState<boolean>(false);
+    const dispatch = useContext(CardsDispatch);
 
-    const inputs = [
-        {
-            name: "title",
-            type: "text",
-        },
-        {
-            name: "description",
-            type: "text",
-        }
-    ];
-
-    const onSubmit = () => {
-        if(Object.keys(form).length === inputs.length && Object.values(form).every(e => e)) {
-            setIsLoading(true);
-            HttpServer<CardForm>().post("cards", form).then(newCard => {
-                newCardAdded(newCard)
-                setIsLoading(false);
-            })
+    const onSubmit = (e: FormEvent) => {
+        e.preventDefault();
+        if (Object.keys(form).length === inputs.length && Object.values(form).every(e => e)) {
+            postData(form).then(newCard => {
+                dispatch({type: ActionTypes.PUSH, payload: newCard as CardModel})
+                setForm({} as CardModel);
+            });
         }
     }
 
     const handleInputChange = (event: Object) => {
         const target = (event as Event)?.target as HTMLInputElement;
-        setForm({
-            ...form,
+        setForm(prevForm => ({
+            ...prevForm,
             [target?.name]: target?.value,
-        })
+        }))
     }
 
-    console.log("form is rerendering")
+    console.log("form is re-rendering")
 
     return (
-        <form className="card card-add">
+        <form className="card card-add" onSubmit={onSubmit}>
             {loading ? <CircularProgress color="inherit" /> : inputs.map(input =>
                 <TextField
                     key={input.name}
@@ -52,7 +45,7 @@ export default memo(function NewCardForm({newCardAdded}: Record<string, any>) {
                     onChange={handleInputChange}
                 />
             )}
-            <Button variant="outlined" onClick={onSubmit}>Create Card</Button>
+            <Button variant="outlined" type="submit">Create Card</Button>
         </form>
     )
 })

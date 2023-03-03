@@ -3,6 +3,11 @@
     flex-wrap: wrap;
 }
 
+.inner-card-list > ul {
+    display: flex;
+    flex-wrap: wrap;
+}
+
 @keyframes fadeOut {
     0%{
         opacity: 1;
