@@ -1,6 +1,6 @@
-# My First React Hooks CRUD
+# React CRUD
 
-Hello there 🙂 I'm learning React
+Hello there 🙂
 
 Used in this project:
 - React
